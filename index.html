@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>The Vending Machine of Things You Can't Buy</title>
+    <meta
+      name="description"
+      content="A fictional vending machine that sells impossible things: three extra hours, a mute button for overthinking, one more chance. Money can't buy everything — this machine disagrees."
+    />
+    <meta name="theme-color" content="#F5F0E6" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#machine" data-i18n="a11y.skip">Skip to the machine</a>
+
+    <div class="page-grain" aria-hidden="true"></div>
+
+    <!-- ══════════════════════ HEADER ══════════════════════ -->
+    <header class="site-header" id="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#top" aria-label="The Vending Machine of Things You Can't Buy">
+          <span class="brand-badge" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <rect x="4" y="3" width="24" height="26" rx="4" stroke="currentColor" stroke-width="2.4" />
+              <rect x="8" y="7" width="16" height="9" rx="2" stroke="currentColor" stroke-width="2.4" />
+              <path d="M10 21h6M10 25h10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+              <circle cx="24" cy="22" r="2" fill="currentColor" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <strong>NOT FOR SALE™</strong>
+            <small data-i18n="brand.sub">Impossible goods, unit 07</small>
+          </span>
+        </a>
+
+        <nav class="main-nav" aria-label="Primary" data-i18n-attr="aria-label:a11y.primaryNav">
+          <a href="#machine" data-i18n="nav.machine">The Machine</a>
+          <a href="#catalog" data-i18n="nav.catalog">Catalog</a>
+          <a href="#inventory">
+            <span data-i18n="nav.inventory">Inventory</span>
+            <span class="nav-count" id="nav-inv-count">0</span>
+          </a>
+        </nav>
+
+        <div class="header-tools">
+          <div class="wallet-chip" id="wallet-chip" data-i18n-attr="aria-label:wallet.label" role="status">
+            <span class="coin-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" />
+                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2.4" />
+              </svg>
+            </span>
+            <span class="wallet-amount" id="wallet-balance">100</span>
+            <span class="wallet-word" data-i18n="wallet.coins">coins</span>
+          </div>
+
+          <div class="lang-switch" role="group" data-i18n-attr="aria-label:a11y.language">
+            <button type="button" class="lang-btn is-active" data-lang="en" aria-pressed="true">EN</button>
+            <span class="lang-divider" aria-hidden="true">|</span>
+            <button type="button" class="lang-btn" data-lang="id" aria-pressed="false">ID 🇮🇩</button>
+          </div>
+
+          <button type="button" class="icon-btn" id="sound-toggle" aria-pressed="false" data-i18n-attr="aria-label:a11y.soundOff,title:a11y.soundOff">
+            <svg class="icon-sound-off" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 9v6h4l5 4V5L8 9H4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              <path d="m17 9 5 6M22 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 9v6h4l5 4V5L8 9H4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              <path d="M16 8.5a5 5 0 0 1 0 7M19 6a9 9 0 0 1 0 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+
+          <button type="button" class="icon-btn inventory-btn" id="inventory-toggle" data-i18n-attr="aria-label:nav.inventory,title:nav.inventory">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 8h14l-1 12H6L5 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span class="inv-badge" id="inv-badge">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ══════════════════════ HERO ══════════════════════ -->
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="hero.eyebrow">EST. 2026 · UNIT 07 · UNLICENSED</p>
+            <h1 class="hero-title" data-i18n="hero.title">THE VENDING MACHINE OF THINGS YOU CAN'T BUY.</h1>
+            <p class="hero-sub" data-i18n="hero.sub">
+              Some things are priceless. Some things are just weirdly unavailable.
+            </p>
+            <p class="hero-tag" data-i18n="hero.tagline" data-lang-only="en">
+              “Money can't buy everything. This machine disagrees.”
+            </p>
+            <p class="hero-tag hero-tag--id" data-i18n="hero.taglineId" data-lang-only="id">
+              “Duit emang bukan segalanya. Tapi mesin ini sok-sokan bisa beli apa aja.”
+            </p>
+            <div class="hero-actions">
+              <button type="button" class="btn btn-primary btn-lg" id="hero-cta" data-i18n="hero.cta">EXPLORE THE MACHINE</button>
+              <a class="btn btn-ghost btn-lg" href="#catalog" data-i18n="hero.cta2">Browse the catalog</a>
+            </div>
+            <ul class="hero-stats">
+              <li>
+                <strong id="stat-items">20</strong>
+                <span data-i18n="hero.stat1">impossible items</span>
+              </li>
+              <li>
+                <strong>0</strong>
+                <span data-i18n="hero.stat2">real money involved</span>
+              </li>
+              <li>
+                <strong id="stat-coins">100</strong>
+                <span data-i18n="hero.stat3">coins in your wallet</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="hero-art" aria-hidden="true">
+            <div class="art-card art-card--tilt">
+              <span class="art-tape"></span>
+              <p class="art-label" data-i18n="hero.artLabel">IMPOSSIBLE GOODS</p>
+              <div class="art-icons">
+                <span class="art-icon art-icon--1" data-icon="clock"></span>
+                <span class="art-icon art-icon--2" data-icon="brain"></span>
+                <span class="art-icon art-icon--3" data-icon="undo"></span>
+                <span class="art-icon art-icon--4" data-icon="star"></span>
+              </div>
+              <p class="art-price">35 <span data-i18n="wallet.coins">coins</span></p>
+            </div>
+            <div class="art-card art-card--stamp">
+              <p class="art-stamp">NO REFUNDS<br />ON FEELINGS</p>
+            </div>
+            <div class="art-coin">
+              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <circle cx="32" cy="32" r="28" fill="#F5C85B" stroke="#20221F" stroke-width="3" />
+                <circle cx="32" cy="32" r="17" stroke="#20221F" stroke-width="3" />
+                <path d="M32 22v20M25 27h14M25 37h14" stroke="#20221F" stroke-width="3" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════ MACHINE ══════════════════════ -->
+      <section class="section machine-section" id="machine" aria-labelledby="machine-title">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="machine.eyebrow">UNIT 07 · COLD STORAGE FOR IMPOSSIBLE THINGS</p>
+          <h2 id="machine-title" data-i18n="machine.title">The Machine</h2>
+          <p class="section-sub" data-i18n="machine.sub">
+            Pick a slot, feed it coins, press the big orange button. Nothing illegal happens. Probably.
+          </p>
+        </div>
+
+        <div class="machine-layout">
+          <div class="machine" id="machine-unit">
+            <div class="machine-crown">
+              <button type="button" class="machine-brand" id="machine-sticker" data-i18n-attr="aria-label:a11y.sticker,title:a11y.sticker">
+                NOT FOR SALE™
+              </button>
+              <span class="machine-serial">SN-07-2204</span>
+            </div>
+
+            <div class="machine-screen" id="machine-screen">
+              <div class="screen-top">
+                <span class="screen-mood" id="machine-mood">IDLE</span>
+                <span class="screen-counts" id="machine-counts">0 / 0</span>
+              </div>
+              <p class="screen-line" id="machine-line">…</p>
+              <div class="screen-signal" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="machine-display">
+              <div class="display-inner">
+                <div class="display-art" id="display-art" aria-hidden="true"></div>
+                <div class="display-meta">
+                  <p class="display-code" id="display-code">TM-00</p>
+                  <h3 class="display-name" id="display-name">—</h3>
+                  <p class="display-desc" id="display-desc">—</p>
+                  <p class="display-price">
+                    <span id="display-price">0</span>
+                    <span class="display-price-unit" data-i18n="wallet.coins">coins</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="machine-slots-wrap">
+              <div class="machine-slots" id="machine-slots" role="group" data-i18n-attr="aria-label:a11y.slots"></div>
+            </div>
+
+            <div class="machine-deck">
+              <div class="coin-unit">
+                <button type="button" class="coin-slot" id="coin-slot" data-i18n-attr="aria-label:a11y.coinSlot">
+                  <span class="coin-flip" aria-hidden="true"></span>
+                  <span class="coin-slot-label" data-i18n="machine.insert">INSERT</span>
+                </button>
+                <p class="coin-help" id="coin-help" data-i18n="machine.coinHelp">Click to feed the machine imaginary coins.</p>
+              </div>
+
+              <button type="button" class="buy-button" id="machine-buy" data-i18n="machine.buy">PURCHASE</button>
+
+              <div class="tray-unit">
+                <div class="tray" id="dispense-tray">
+                  <div class="tray-hatch" aria-hidden="true"></div>
+                  <div class="tray-item" id="tray-item" aria-hidden="true"></div>
+                  <p class="tray-label" data-i18n="machine.tray">TRAY</p>
+                </div>
+              </div>
+            </div>
+
+            <ul class="machine-stickers">
+              <li data-i18n="machine.sticker1">MAY CAUSE EMOTIONAL SIDE EFFECTS</li>
+              <li data-i18n="machine.sticker2">NO REFUNDS · NO REALITY INCLUDED</li>
+              <li data-i18n="machine.sticker3">COINS ARE FICTIONAL · FEELINGS ARE NOT</li>
+            </ul>
+          </div>
+
+          <aside class="machine-side">
+            <div class="panel panel--wallet">
+              <h3 class="panel-title" data-i18n="wallet.title">Virtual Wallet</h3>
+              <p class="wallet-big">
+                <span id="wallet-balance-big">100</span>
+                <span class="wallet-big-unit" data-i18n="wallet.coins">coins</span>
+              </p>
+              <div class="wallet-actions">
+                <button type="button" class="btn btn-ghost btn-sm" id="wallet-topup" data-i18n="wallet.topup">+10 COINS</button>
+                <button type="button" class="btn btn-ghost btn-sm btn-danger" id="wallet-reset" data-i18n="wallet.reset">RESET PROGRESS</button>
+              </div>
+              <h4 class="panel-sub" data-i18n="wallet.history">Recent transactions</h4>
+              <ul class="tx-list" id="tx-list"></ul>
+            </div>
+
+            <div class="panel panel--log">
+              <h3 class="panel-title" data-i18n="log.title">Machine log</h3>
+              <p class="log-line" id="log-line">…</p>
+              <ul class="log-list" id="log-list"></ul>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ══════════════════════ CATALOG ══════════════════════ -->
+      <section class="section catalog-section" id="catalog" aria-labelledby="catalog-title">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="catalog.eyebrow">FULL INVENTORY · NOTHING HERE IS REAL</p>
+          <h2 id="catalog-title" data-i18n="catalog.title">The Catalog</h2>
+          <p class="section-sub" data-i18n="catalog.sub">
+            What would you buy if money wasn't the problem?
+          </p>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-field">
+            <span class="search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2.2" />
+                <path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <input
+              type="search"
+              id="search"
+              autocomplete="off"
+              data-i18n-attr="placeholder:search.placeholder,aria-label:search.placeholder"
+            />
+            <button type="button" class="search-clear" id="clear-search" hidden aria-label="Clear search" data-i18n-attr="aria-label:a11y.clearSearch">
+              ×
+            </button>
+          </div>
+
+          <div class="chips" id="category-chips" role="group" data-i18n-attr="aria-label:a11y.categories"></div>
+
+          <div class="selects">
+            <label class="select-field">
+              <span data-i18n="filter.rarity">Rarity</span>
+              <select id="rarity-select" data-i18n-attr="aria-label:filter.rarity"></select>
+            </label>
+            <label class="select-field">
+              <span data-i18n="filter.sort">Sort</span>
+              <select id="sort-select" data-i18n-attr="aria-label:filter.sort"></select>
+            </label>
+            <button type="button" class="btn btn-ghost btn-sm" id="reset-filters" data-i18n="filter.reset">RESET FILTERS</button>
+          </div>
+
+          <p class="results-count" id="results-count" role="status"></p>
+        </div>
+
+        <div class="product-grid" id="product-grid"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <span class="empty-icon" aria-hidden="true">🫙</span>
+          <p class="empty-title" data-i18n="empty.title">Nothing found. Even this machine has limits.</p>
+          <p class="empty-sub" data-i18n="empty.sub">Try another word, or reset the filters.</p>
+          <button type="button" class="btn btn-primary btn-sm" id="empty-reset" data-i18n="filter.reset">RESET FILTERS</button>
+        </div>
+      </section>
+
+      <!-- ══════════════════════ INVENTORY ══════════════════════ -->
+      <section class="section inventory-section" id="inventory" aria-labelledby="inventory-title">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="inv.eyebrow">PERSONAL CUSTODY · 100% FICTIONAL</p>
+          <h2 id="inventory-title" data-i18n="inv.title">Your Inventory</h2>
+          <p class="section-sub" data-i18n="inv.sub">Your collection of things that don't technically exist.</p>
+        </div>
+
+        <div class="inv-layout">
+          <div>
+            <div class="inv-grid" id="inv-grid"></div>
+            <div class="empty-state" id="inv-empty">
+              <span class="empty-icon" aria-hidden="true">📦</span>
+              <p class="empty-title" data-i18n="inv.emptyTitle">Nothing in here yet.</p>
+              <p class="empty-sub" data-i18n="inv.emptySub">Buy something impossible. It goes straight to this shelf.</p>
+            </div>
+          </div>
+
+          <aside class="panel panel--ach">
+            <h3 class="panel-title" data-i18n="ach.title">Achievements</h3>
+            <ul class="ach-list" id="ach-list"></ul>
+
+            <h3 class="panel-title panel-title--spaced" data-i18n="secret.title">Secrets found</h3>
+            <p class="secret-count">
+              <span id="secret-count">0</span> / <span id="secret-total">7</span>
+            </p>
+            <div class="secret-dots" id="secret-dots"></div>
+            <p class="secret-hint" data-i18n="secret.hint">Some things only show up if you look for them.</p>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <!-- ══════════════════════ FOOTER ══════════════════════ -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-col">
+          <p class="footer-brand">NOT FOR SALE™</p>
+          <p class="footer-note" data-i18n="footer.note">
+            This is a fictional store. No real money, no real product, no real refund. Buying an item here does not fix your life,
+            your budget, or your mental health — it just makes a very small digital machine feel briefly generous.
+          </p>
+        </div>
+        <div class="footer-col">
+          <p class="footer-head" data-i18n="footer.dataHead">Your data</p>
+          <p class="footer-note" data-i18n="footer.dataNote">
+            Everything is stored in this browser only (localStorage). Nothing is uploaded anywhere. Clearing site data resets the
+            machine and your wallet.
+          </p>
+        </div>
+        <div class="footer-col">
+          <p class="footer-head" data-i18n="footer.buildHead">Colophon</p>
+          <p class="footer-note" data-i18n="footer.buildNote">
+            Vanilla HTML, CSS and JavaScript. No frameworks, no backend, no analytics. Art direction: cream, navy, tangerine, mint.
+          </p>
+        </div>
+      </div>
+      <p class="footer-bottom">
+        <span data-i18n="footer.rights">Unit 07 sells nothing. It only pretends convincingly.</span>
+        <button type="button" class="link-btn" id="footer-reset" data-i18n="footer.reset">Reset all progress</button>
+      </p>
+    </footer>
+
+    <!-- ══════════════════════ PRODUCT MODAL ══════════════════════ -->
+    <div class="modal-layer" id="product-modal" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <div
+        class="modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        id="modal-card"
+      >
+        <button type="button" class="modal-close" id="modal-close" data-i18n-attr="aria-label:a11y.close">
+          <span aria-hidden="true">×</span>
+        </button>
+        <div class="modal-art" id="modal-art" aria-hidden="true"></div>
+        <div class="modal-body">
+          <p class="modal-code" id="modal-code">TM-00</p>
+          <h2 id="modal-title">—</h2>
+          <p class="modal-desc" id="modal-desc">—</p>
+          <ul class="modal-meta">
+            <li>
+              <span data-i18n="product.rarity">Rarity</span>
+              <b id="modal-rarity">—</b>
+            </li>
+            <li>
+              <span data-i18n="product.category">Category</span>
+              <b id="modal-cat">—</b>
+            </li>
+            <li>
+              <span data-i18n="product.price">Price</span>
+              <b id="modal-price">—</b>
+            </li>
+          </ul>
+          <p class="modal-effect" id="modal-effect">—</p>
+          <p class="modal-warning" data-i18n="product.warning">This item may cause emotional side effects.</p>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-primary" id="modal-buy">BUY</button>
+            <button type="button" class="btn btn-ghost" id="modal-cancel" data-i18n="common.close">Close</button>
+          </div>
+          <p class="modal-msg" id="modal-msg" role="status"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════ SCENE OVERLAY (product effects) ══════════════════════ -->
+    <div class="scene-layer" id="scene-layer" hidden>
+      <div class="scene-backdrop" data-close-scene></div>
+      <div class="scene-card" role="dialog" aria-modal="true" aria-labelledby="scene-title" id="scene-card">
+        <button type="button" class="modal-close" id="scene-close" data-i18n-attr="aria-label:a11y.close">
+          <span aria-hidden="true">×</span>
+        </button>
+        <div class="scene-visual" id="scene-visual" aria-hidden="true"></div>
+        <div class="scene-body">
+          <p class="scene-kicker" id="scene-kicker">EFFECT</p>
+          <h2 id="scene-title">—</h2>
+          <div class="scene-content" id="scene-content"></div>
+          <div class="scene-actions" id="scene-actions"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════ CONFIRM DIALOG ══════════════════════ -->
+    <div class="modal-layer" id="confirm-modal" hidden>
+      <div class="modal-backdrop" data-close-confirm></div>
+      <div class="modal-card modal-card--small" role="dialog" aria-modal="true" aria-labelledby="confirm-title" id="confirm-card">
+        <h2 id="confirm-title" data-i18n="confirm.title">Reset everything?</h2>
+        <p class="modal-desc" id="confirm-desc">—</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary btn-danger" id="confirm-yes" data-i18n="confirm.yes">RESET</button>
+          <button type="button" class="btn btn-ghost" id="confirm-no" data-i18n="confirm.no">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="false"></div>
+    <p class="sr-only" id="live-region" aria-live="polite" role="status"></p>
+
+    <!--
+      The app has no imports, so it can run either as a module or as a classic script.
+      Browsers block module scripts on file:// (CORS), so this tiny fallback loads the
+      same file classically when the page is opened straight from the filesystem.
+    -->
+    <script>
+      window.__VMNB_LOADED__ = false;
+      setTimeout(function () {
+        if (window.__VMNB_LOADED__ || location.protocol !== 'file:') return;
+        var tag = document.createElement('script');
+        tag.src = './script.js';
+        document.head.appendChild(tag);
+      }, 250);
+    </script>
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
